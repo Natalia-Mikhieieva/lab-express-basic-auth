@@ -1,8 +1,14 @@
-const isAuth = (req, res, next) => {
-  if (req.session.isAuth) {
-    next();
-  } else {
-    res.redirect("/signup");
+const isLoggedIn = (req, res, next) => {
+  if (!req.session.currentUser) {
+    return res.redirect("/login");
   }
-}
-module.exports = {isAuth};
+  next();
+};
+const isloggedOut = (req, res, next) => {
+  if (req.session.currentUser) {
+    return res.redirect("/");
+  }
+  next();
+};
+
+module.exports = { isLoggedIn, isloggedOut };
